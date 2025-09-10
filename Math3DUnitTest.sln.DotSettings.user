@@ -1,0 +1,14 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ec612570_002D5218_002D4b53_002Dac0f_002D7925df7d579c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Tests01_NewMatrices" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests01_NewMatrices&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests02_CopyAndModifyMatrices&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests03_IdentityMatrices&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests04_ScalarMultiplication&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests05_MatricesAddAndSubtract.TestSumMatricesInstances&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests06_MatricesMultiplication&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests07_TransposeMatrices.TestTransposeMatrixStatic&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests07_TransposeMatrices.TestTransposeMatrixInstance&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests07_TransposeMatrices&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
