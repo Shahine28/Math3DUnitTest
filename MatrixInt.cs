@@ -10,7 +10,7 @@ namespace Maths_Matrices.Tests
         {
             NbLines = n;
             NbColumns = m;
-            _data = new int[n, m]; // auto-rempli de 0
+            _data = new int[n, m];
         }
         
         public MatrixInt(int[,] values)
@@ -47,11 +47,48 @@ namespace Maths_Matrices.Tests
             set => _data[i, j] = value;
         }
 
-        public int[] this[int i]
+        public int[] GetLine(int i)
         {
-            get => _data[i, 0];
-            set => _data[i] = value;
+            int[] line = new int[NbColumns];
+            for (int j = 0; j < NbColumns; j++)
+            {
+                line[j] = _data[i, j];
+            }
+            return line;
         }
+
+        public void SetLine(int i, int[] values)
+        {
+            if (values.Length != NbColumns)
+                throw new ArgumentException("Line length must match number of columns.");
+
+            for (int j = 0; j < NbColumns; j++)
+            {
+                _data[i, j] = values[j];
+            }
+        }
+
+        public int[] GetColumn(int j)
+        {
+            int[] col = new int[NbLines];
+            for (int i = 0; i < NbLines; i++)
+            {
+                col[i] = _data[i, j];
+            }
+            return col;
+        }
+
+        public void SetColumn(int j, int[] values)
+        {
+            if (values.Length != NbLines)
+                throw new ArgumentException("Column length must match number of lines.");
+
+            for (int i = 0; i < NbLines; i++)
+            {
+                _data[i, j] = values[i];
+            }
+        }
+
 
         public static MatrixInt Identity(int size)
         {
@@ -221,5 +258,40 @@ namespace Maths_Matrices.Tests
             }
             return result;
         }
+
+        public static MatrixInt GenerateAugmentedMatrix(MatrixInt matrix, MatrixInt matrixColumn)
+        {
+            if (matrix.NbLines != matrixColumn.NbLines) throw new ArgumentException("Matrices must have the same nb of lines.");
+            if (matrixColumn.NbColumns != 1) throw new ArgumentException("Column matrix must have 1 column only.");
+            MatrixInt result = new MatrixInt(matrix.NbLines, matrix.NbColumns + 1);
+            for (int i = 0; i < matrix.NbLines; i++)
+            {
+                for (int j = 0; j < matrix.NbColumns; j++)
+                {
+                    result[i, j] = matrix[i, j];
+                }
+                result[i, matrix.NbColumns] = matrixColumn[i, 0];
+            }
+            return result;
+        }
+
+        public (MatrixInt, MatrixInt) Split(int splitColumnIndex)
+        {
+            MatrixInt left = new MatrixInt(NbLines, splitColumnIndex + 1);
+            MatrixInt right = new MatrixInt(NbLines, NbColumns - (splitColumnIndex + 1));
+
+            for (int i = 0; i < NbLines; i++)
+            {
+                for (int j = 0; j <= splitColumnIndex; j++)
+                    left[i, j] = _data[i, j];
+
+                for (int j = splitColumnIndex + 1; j < NbColumns; j++)
+                    right[i, j - (splitColumnIndex + 1)] = _data[i, j];
+            }
+
+            return (left, right);
+        }
+
     }
+        
 }
