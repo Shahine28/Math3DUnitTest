@@ -2,10 +2,10 @@
 
 namespace Maths_Matrices.Tests
 {
-    [TestFixture, DefaultFloatingPointTolerance(0.001f)]
+    [TestFixture]
     public class Tests10_RowReduction
     {
-        [Test]
+        [Test, DefaultFloatingPointTolerance(0.001f)]
         public void TestApplyRowReduction_CourseExample()
         {
             MatrixFloat m1 = new MatrixFloat(new[,]
@@ -41,7 +41,7 @@ namespace Maths_Matrices.Tests
             }, m2.ToArray2D());
         }
 
-        [Test]
+        [Test, DefaultFloatingPointTolerance(0.001f)]
         public void TestApplyRowReduction_Exercise()
         {
             MatrixFloat m1 = new MatrixFloat(new[,]

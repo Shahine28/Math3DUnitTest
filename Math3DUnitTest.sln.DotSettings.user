@@ -12,5 +12,9 @@
     &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests07_TransposeMatrices&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests08_ElementaryOperations&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests09_AugmentedMatricesAndSplit&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests10_RowReduction&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests11_InvertMatricesUsingRowReduction&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests12_SubMatrices&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::B00178AF-6C26-4242-95FF-F53E06532DF1::net8.0::Maths_Matrices.Tests.Tests13_Determinants&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

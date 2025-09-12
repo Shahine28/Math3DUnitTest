@@ -1,4 +1,5 @@
 using System;
+using System.IO.Compression;
 
 namespace Maths_Matrices.Tests
 {
@@ -184,27 +185,28 @@ namespace Maths_Matrices.Tests
             return result;
         }
         
-        public static MatrixFloat GenerateAugmentedMatrix(MatrixFloat matrix, MatrixFloat matrixColumn)
+        public static MatrixFloat GenerateAugmentedMatrix(MatrixFloat left, MatrixFloat right)
         {
-            if (matrix.NbLines != matrixColumn.NbLines)
+            if (left.NbLines != right.NbLines)
                 throw new ArgumentException("Matrices must have the same number of lines.");
-            if (matrixColumn.NbColumns != 1)
-                throw new ArgumentException("Column matrix must have exactly 1 column.");
 
-            MatrixFloat result = new MatrixFloat(matrix.NbLines, matrix.NbColumns + 1);
+            // Fusion : même nb de lignes, colonnes concaténées
+            MatrixFloat result = new MatrixFloat(left.NbLines, left.NbColumns + right.NbColumns);
 
-            for (int i = 0; i < matrix.NbLines; i++)
+            for (int i = 0; i < left.NbLines; i++)
             {
-                // Copier la matrice originale
-                for (int j = 0; j < matrix.NbColumns; j++)
-                    result[i, j] = matrix[i, j];
+                // Copier les colonnes de la matrice de gauche
+                for (int j = 0; j < left.NbColumns; j++)
+                    result[i, j] = left[i, j];
 
-                // Ajouter la colonne supplémentaire
-                result[i, matrix.NbColumns] = matrixColumn[i, 0];
+                // Copier les colonnes de la matrice de droite
+                for (int j = 0; j < right.NbColumns; j++)
+                    result[i, left.NbColumns + j] = right[i, j];
             }
 
             return result;
         }
+
 
         public (MatrixFloat, MatrixFloat) Split(int splitColumnIndex)
         {
@@ -227,6 +229,76 @@ namespace Maths_Matrices.Tests
             }
 
             return (left, right);
+        }
+
+        public MatrixFloat InvertByRowReduction()
+        {
+            return InvertByRowReduction(this);
+        }
+
+        public static MatrixFloat InvertByRowReduction(MatrixFloat matrix)
+        {
+            if (matrix.NbLines != matrix.NbColumns)
+            {
+                throw new MatrixInvertException("Matrix dimensions must have the same number of lines and columns.");
+            }
+            MatrixFloat IdentityMatrix = Identity(matrix.NbLines);
+            (MatrixFloat left, MatrixFloat right) = MatrixRowReductionAlgorithm.Apply(matrix, IdentityMatrix);
+
+            for (int i = 0; i < right.NbLines; i++)
+            {
+                for (int j = 0; j < right.NbColumns; j++)
+                {
+                    float expected = (i == j) ? 0 : 1;
+                    if (Math.Abs(right[i, j] - expected) > 0.0001f)
+                        throw new MatrixInvertException("The matrix is singular");
+                }
+            }
+            return right;
+        }
+
+        public MatrixFloat SubMatrix(int lineIndex, int columnIndex)
+        {
+            return SubMatrix(this, lineIndex, columnIndex);
+        }
+        
+        public static MatrixFloat SubMatrix(MatrixFloat matrix, int lineIndex, int columnIndex)
+        {
+            MatrixFloat result = new MatrixFloat(matrix.NbLines - 1, matrix.NbColumns - 1);
+            int newI = 0;
+            for (int i = 0; i < matrix.NbLines; i++)
+            {
+                if (i == lineIndex) continue;
+                int newJ = 0;
+                for (int j = 0; j < matrix.NbColumns; j++)
+                {
+                    if (j == columnIndex) continue;
+                    
+                    result[newI, newJ] = matrix[i, j];
+                    newJ++;
+                    
+                }
+
+                newI++;
+            }
+            return result;
+        }
+
+        public static float Determinant(MatrixFloat matrix)
+        {
+            if (matrix.NbLines != matrix.NbColumns)
+                throw new ArgumentException("Matrix dimensions must have the same number of lines and columns.");
+            MatrixFloat result = InvertByRowReduction(matrix);
+            float determinant = matrix[0, 0];
+            for (int i = 1; i < result.NbLines; i++)
+            {
+                for (int j = 1; j < result.NbColumns; j++)
+                {
+                    if (j == i) determinant *=  matrix[i, j];
+                }
+            }
+            
+            return determinant;
         }
         
     }
