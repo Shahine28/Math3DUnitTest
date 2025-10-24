@@ -9,6 +9,27 @@ namespace Maths_Matrices.Tests
         public int NbLines { get; }
         public int NbColumns { get; }
         
+        public override string ToString()
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            sb.AppendLine($"MatrixFloat {NbLines}x{NbColumns}");
+
+            for (int i = 0; i < NbLines; i++)
+            {
+                sb.Append("[ ");
+                for (int j = 0; j < NbColumns; j++)
+                {
+                    sb.Append(_data[i, j].ToString("0.###").PadLeft(8)); // 3 décimales max
+                    if (j < NbColumns - 1)
+                        sb.Append(", ");
+                }
+                sb.AppendLine(" ]");
+            }
+
+            return sb.ToString();
+        }
+
         public MatrixFloat(int n, int m)
         {
             NbLines = n;
@@ -245,12 +266,17 @@ namespace Maths_Matrices.Tests
             MatrixFloat IdentityMatrix = Identity(matrix.NbLines);
             (MatrixFloat left, MatrixFloat right) = MatrixRowReductionAlgorithm.Apply(matrix, IdentityMatrix);
 
-            for (int i = 0; i < right.NbLines; i++)
+            //Console.WriteLine("LEFT:"); // Pour le debug
+            //Console.WriteLine(left.ToString());
+            //Console.WriteLine("RIGHT:");
+            //Console.WriteLine(right.ToString());
+            
+            for (int i = 0; i < left.NbLines; i++)
             {
-                for (int j = 0; j < right.NbColumns; j++)
+                for (int j = 0; j < left.NbColumns; j++)
                 {
-                    float expected = (i == j) ? 0 : 1;
-                    if (Math.Abs(right[i, j] - expected) > 0.0001f)
+                    float expected = (i == j) ? 1f : 0f;
+                    if (Math.Abs(left[i, j] - expected) > 0.001f)
                         throw new MatrixInvertException("The matrix is singular");
                 }
             }
@@ -288,18 +314,70 @@ namespace Maths_Matrices.Tests
         {
             if (matrix.NbLines != matrix.NbColumns)
                 throw new ArgumentException("Matrix dimensions must have the same number of lines and columns.");
-            MatrixFloat result = InvertByRowReduction(matrix);
-            float determinant = matrix[0, 0];
-            for (int i = 1; i < result.NbLines; i++)
+            
+            int size = matrix.NbLines;
+            if (size == 0)
+                return 1f;
+            if (size == 1)
+                return matrix[0, 0];
+            if (size == 2)
+                return matrix[0, 0] * matrix[1, 1] - matrix[0, 1] * matrix[1, 0];
+
+            float determinant = 0f;
+            for (int j = 0; j < size; j++)
             {
-                for (int j = 1; j < result.NbColumns; j++)
-                {
-                    if (j == i) determinant *=  matrix[i, j];
-                }
+                float element = matrix[0, j];
+                if (element == 0f) continue;
+
+                MatrixFloat minor = SubMatrix(matrix, 0, j);
+                float cofactor = Determinant(minor);
+                if ((j & 1) == 1)
+                    cofactor = -cofactor;
+
+                determinant += element * cofactor;
             }
             
             return determinant;
         }
         
+        public MatrixFloat Adjugate()
+        {
+            return Adjugate(this);
+        }
+        
+        public static MatrixFloat Adjugate(MatrixFloat m)
+        {
+            if (m.NbLines != m.NbColumns)
+                throw new InvalidOperationException("Adjugate is defined only for square matrices.");
+            
+            MatrixFloat adjugate = new MatrixFloat(m.NbLines, m.NbColumns);
+            for (int i = 0; i < adjugate.NbLines; i++)
+            {
+                for (int j = 0; j < adjugate.NbColumns; j++)
+                {
+                    MatrixFloat minor = SubMatrix(m, i, j);
+                    float cofactor = Determinant(minor);
+                    if ((i + j) % 2 == 1)
+                        cofactor = -cofactor;
+                    adjugate[i, j] = cofactor;
+                }
+            }
+            return Transpose(adjugate);
+        }
+        
+        public MatrixFloat InvertByDeterminant()
+        {
+            return InvertByDeterminant(this);
+        }
+        
+        public static MatrixFloat InvertByDeterminant(MatrixFloat m)
+        {
+            float det = Determinant(m);
+            if (Math.Abs(det) < 1e-6f)
+                throw new MatrixInvertException("The matrix is singular and cannot be inverted.");
+
+            MatrixFloat adjugate = Adjugate(m);
+            return Multiply(adjugate, 1f / det);
+        }
     }
 }

@@ -4,10 +4,11 @@ public class MatrixRowReductionAlgorithm
 {
     public static (MatrixFloat, MatrixFloat) Apply(MatrixFloat a, MatrixFloat b)
     {
+        // [A | B]
         MatrixFloat matrix = MatrixFloat.GenerateAugmentedMatrix(a, b);
         int i = 0;
 
-        for (int j = 0; j < a.NbColumns; j++) // seulement sur les colonnes de A
+        for (int j = 0; j < a.NbColumns; j++) // Colonnes de A seulement
         {
             int k = i;
             for (int v = i; v < matrix.NbLines; v++)
@@ -15,16 +16,16 @@ public class MatrixRowReductionAlgorithm
                 if (Math.Abs(matrix[v, j]) > Math.Abs(matrix[k, j]))
                     k = v;
             }
-            
-            if (i != k) 
+
+            if (i != k)
                 MatrixElementaryOperations.SwapLines(matrix, i, k);
-            
+
             float pivot = matrix[i, j];
-            if (Math.Abs(pivot) < 1e-6f) 
-                continue; 
+            if (Math.Abs(pivot) < 1e-6f)
+                continue;
 
             MatrixElementaryOperations.MultiplyLine(matrix, i, 1f / pivot);
-            
+
             for (int r = 0; r < matrix.NbLines; r++)
             {
                 if (r == i) continue;
@@ -35,8 +36,11 @@ public class MatrixRowReductionAlgorithm
 
             i++;
         }
+
+        // Correction 2 : découpage à la bonne colonne
         (MatrixFloat left, MatrixFloat right) = matrix.Split(a.NbColumns - 1);
         return (left, right);
     }
+
 
 }

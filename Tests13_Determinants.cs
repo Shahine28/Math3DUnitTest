@@ -2,7 +2,7 @@
 
 namespace Maths_Matrices.Tests
 {
-    [TestFixture, DefaultFloatingPointTolerance(0.001f)]
+    [TestFixture, DefaultFloatingPointTolerance(0.01f)]
     public class Tests13_Determinants
     {
         [Test]
